@@ -10,7 +10,7 @@ def load_task(json_file):
     return raw_input
 
 
-def paint_position(positions, colour, grid):
+def paint_positions(positions, colour, grid):
     """Paints positions on the grid with the given colour
     positions: list of points
     colour: colour to use
