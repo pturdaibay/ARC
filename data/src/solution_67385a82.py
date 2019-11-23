@@ -13,17 +13,10 @@ def solution(json_input):
 def solve(grid):
     """Solves task 67385a82"""
 
-    def paint_blue(shape, grid):
-        """Paints shapes blue on the grid
-        shape: list of positions to paint
-        grid: colour values for each position"""
-        for x,y in shape:
-            grid[y][x] = 8
-
     results = solutils.shapes(grid, btype='side', colour=True)
     for shape in results:
         if len(shape) > 1: #shape to colour
-            paint_blue(shape, grid)
+            solutils.paint_position(shape, 8, grid)
     return grid
 
 
