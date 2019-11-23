@@ -53,9 +53,10 @@ def shapes(grid, btype='side', colour=False):
         x2, y2 = pos2
         return grid[y1][x1] == grid[y2][x2]
 
-    def find_shape(position, shapes):
+    def find_shape(current, position, shapes):
         """Finds a shape given a position, returns a list with indices for all
         shapes that contained the point and match the colour if required
+        current: current position being evaluated, tuple (x,y)
         position: tuple containing x,y coordinates on the grid
         shapes: list of lists containing all shapes"""
 
@@ -65,7 +66,7 @@ def shapes(grid, btype='side', colour=False):
                 if not colour:
                     indices.append(i)
                 else:
-                    if colour_match(position, shapes[i][0]):
+                    if colour_match(current, shapes[i][0]):
                         indices.append(i)
         return indices
 
@@ -82,7 +83,7 @@ def shapes(grid, btype='side', colour=False):
             borders = border_points((x, y), grid_size, btype)
             matches = [] # shape matches for a position
             for position in borders:
-                matches += find_shape(position, shapes)
+                matches += find_shape((x, y), position, shapes)
             matches = list(set(matches))
             if len(matches) == 0: # not connected, new shape ?
                 shapes.append([(x, y)])
@@ -94,6 +95,14 @@ def shapes(grid, btype='side', colour=False):
                     del shapes[i]
                 shapes[matches[0]].append((x, y))
     return shapes
+
+
+def print_grid(grid):
+    """Print out the grid"""
+    for y in range(0, len(grid)):
+        for x in range(0, len(grid[y])):
+            print(grid[y][x], sep=' ', end='')
+        print('', end='\n')
 
 
 if __name__ == '__main__':
