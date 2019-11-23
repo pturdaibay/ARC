@@ -16,7 +16,7 @@ def solve(grid):
     results = solutils.shapes(grid, btype='side', colour=True)
     for shape in results:
         if len(shape) > 1: #shape to colour
-            solutils.paint_position(shape, 8, grid)
+            solutils.paint_positions(shape, 8, grid)
     return grid
 
 
