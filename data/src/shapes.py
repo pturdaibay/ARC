@@ -42,7 +42,8 @@ def shapes(grid, border='side', colour=None):
     def find_shape(position, shapes):
         """Finds a shape given a position, returns a list with indices for all
         shapes that contained the point
-        shapes: list containing all shapes"""
+        position: tuple containing x,y coordinates on the grid
+        shapes: list of lists containing all shapes"""
 
         indices = []
         for i in range(0, len(shapes)):
@@ -60,28 +61,24 @@ def shapes(grid, border='side', colour=None):
         for x in range(0, len(grid[y])):
             if grid[y][x] == 0: # empty position, go to next
                 continue
-            print(f'Point: ({x},{y})')
             borders = border_points((x, y), grid_size)
             matches = [] # shape matches for a position
             for position in borders:
                 matches += find_shape(position, shapes)
             matches = list(set(matches))
-            print(f'matches: {matches}')
             if len(matches) == 0: # not connected, new shape ?
                 shapes.append([(x, y)])
             elif len(matches) == 1: # found a shape to join
                 shapes[matches[0]].append((x, y))
             else: # found more than one shape, connect shapes and delete dups
                 for i in matches[1:]:
-                    print(f'i is: {i}')
                     shapes[matches[0]] += shapes[i]
                     del shapes[i]
                 shapes[matches[0]].append((x, y))
-            print(f'shapes: {shapes}')
     return shapes
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     side_borders((0, 2), (4,4))
     side_borders((3, 4), (3,3))
     side_borders((2, 2), (3,4))
