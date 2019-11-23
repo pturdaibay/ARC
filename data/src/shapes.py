@@ -50,7 +50,36 @@ def shapes(grid, border='side', colour=None):
                 indices.append(i)
         return indices
 
-    shapes = []
+    grid_size = ((len(grid[0]), len(grid)))
+    shapes = []  # Start with an empty list of shapes
+    borders = [] # Borders for each position
+    # Main loop to connect positions into shapes, for each position
+    # get its borders, then check if those exist in other shapes
+    # then join the shapes found or create a new shape if not connected to any
+    for y in range(0, len(grid)):
+        for x in range(0, len(grid[y])):
+            if grid[y][x] == 0: # empty position, go to next
+                continue
+            print(f'Point: ({x},{y})')
+            borders = border_points((x, y), grid_size)
+            matches = [] # shape matches for a position
+            for position in borders:
+                matches += find_shape(position, shapes)
+            matches = list(set(matches))
+            print(f'matches: {matches}')
+            if len(matches) == 0: # not connected, new shape ?
+                shapes.append([(x, y)])
+            elif len(matches) == 1: # found a shape to join
+                shapes[matches[0]].append((x, y))
+            else: # found more than one shape, connect shapes and delete dups
+                for i in matches[1:]:
+                    print(f'i is: {i}')
+                    shapes[matches[0]] += shapes[i]
+                    del shapes[i]
+                shapes[matches[0]].append((x, y))
+            print(f'shapes: {shapes}')
+    return shapes
+
 
 if __name__ == 'main':
     side_borders((0, 2), (4,4))
