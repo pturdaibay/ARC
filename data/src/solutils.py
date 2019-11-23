@@ -1,3 +1,15 @@
+import json
+
+def load_task(json_file):
+    try:
+        with open(json_file, 'r') as jinput:
+            raw_input = json.load(jinput)
+    except FileNotFoundError as e:
+        print(f'Error, file not found: {json_file}')
+        return
+    return raw_input
+
+
 def border_points(position, gsize, btype='all'):
     """Returns a list of points that border the input position.
     position: (x,y) tuple for position coordinates

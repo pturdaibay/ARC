@@ -1,6 +1,13 @@
 import sys
-import json
-import shapes
+import solutils
+
+def solution(json_input):
+    for i in ['train', 'test']:
+        for j in range(0, len(json_input.get(i))):
+            grid = json_input.get(i)[j]['input']
+            sol = solve(grid)
+            solutils.print_grid(sol)
+            print('', end='\n')
 
 
 def solve(grid):
@@ -13,27 +20,16 @@ def solve(grid):
         for x,y in shape:
             grid[y][x] = 8
 
-    results = shapes.shapes(grid, btype='side', colour=True)
+    results = solutils.shapes(grid, btype='side', colour=True)
     for shape in results:
         if len(shape) > 1: #shape to colour
             paint_blue(shape, grid)
     return grid
 
+
 def main(json_file):
-    try:
-        with open(json_file, 'r') as jinput:
-            raw_input = json.load(jinput)
-    except FileNotFoundError as e:
-        print(f'Error, file not found: {json_file}')
-        return
-
-    for i in ['train', 'test']:
-        for j in range(0, len(raw_input.get(i))):
-            grid = raw_input.get(i)[j]['input']
-            sol = solve(grid)
-            shapes.print_grid(sol)
-            print('', end='\n')
-
+    json_input = solutils.load_task(json_file)
+    solution(json_input)
 
 
 if __name__ == '__main__':
