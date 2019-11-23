@@ -10,6 +10,23 @@ def load_task(json_file):
     return raw_input
 
 
+def paint_position(positions, colour, grid):
+    """Paints positions on the grid with the given colour
+    positions: list of points
+    colour: colour to use
+    grid: grid to paint
+    """
+    for x, y in positions:
+        grid[y][x] = colour
+
+def print_grid(grid):
+    """Print out the grid"""
+    for y in range(0, len(grid)):
+        for x in range(0, len(grid[y])):
+            print(grid[y][x], sep=' ', end='')
+        print('', end='\n')
+
+
 def border_points(position, gsize, btype='all'):
     """Returns a list of points that border the input position.
     position: (x,y) tuple for position coordinates
@@ -109,12 +126,49 @@ def shapes(grid, btype='side', colour=False):
     return shapes
 
 
-def print_grid(grid):
-    """Print out the grid"""
-    for y in range(0, len(grid)):
-        for x in range(0, len(grid[y])):
-            print(grid[y][x], sep=' ', end='')
-        print('', end='\n')
+def get_colour(position, grid):
+    """Return the colour for a give position"""
+    x, y = position
+    return grid[y][x]
+
+def find_centre(shape):
+    """Finds and returns the centre of a shape
+    shape: list with shape points"""
+    minx = miny = 1000
+    maxx = maxy = -1000
+    for x, y in shape:
+        if x < minx:
+            minx = x
+        if x > maxx:
+            maxx = x
+        if y < miny:
+            miny = y
+        if y > maxy:
+            maxy = y
+    return ((minx + maxx) // 2, (miny + maxy) // 2)
+
+
+def parts_11852cab(centre):
+    """Return lists containing corners, sides, middle points for the task
+    11852cab"""
+    x, y = centre
+    corners = [(x-2, y-2), (x+2, y-2), (x-2, y+2), (x+2, y+2)]
+    sides = [(x, y-2), (x-2, y), (x+2, y), (x, y+2)]
+    middle = [(x-1, y-1), (x+1, y-1), (x-1, y+1), (x+1, y+1)]
+    return corners, sides, middle
+
+
+def part_colours_11852cab(part, grid):
+    """Finds the respective colour for the part. Returns a tuple with the colour
+    part: list with part points
+    grid: task grid
+    """
+    for position in part:
+        colour = get_colour(position, grid)
+        if colour != 0:
+            return colour
+    return None #if we get here we didn't find any colour
+
 
 
 if __name__ == '__main__':
