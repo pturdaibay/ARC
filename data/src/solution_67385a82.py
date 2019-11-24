@@ -2,6 +2,8 @@ import sys
 import solutils
 
 def solution(json_input):
+    """Processes train and test grids"""
+
     for i in ['train', 'test']:
         for j in range(0, len(json_input.get(i))):
             grid = json_input.get(i)[j]['input']
@@ -11,7 +13,13 @@ def solution(json_input):
 
 
 def solve(grid):
-    """Solves task 67385a82"""
+    """Solves task 67385a82
+
+    This task finds shapes using positions connected on their sides and having
+    the same colour.
+    Once all shapes are extracted, those that are formed by more than one
+    position are coloured blue (8).
+    """
 
     results = solutils.shapes(grid, btype='side', colour=True)
     for shape in results:

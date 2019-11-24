@@ -2,6 +2,8 @@ import sys
 import solutils
 
 def solution(json_input):
+    """Processes train and test grids"""
+
     for i in ['train', 'test']:
         for j in range(0, len(json_input.get(i))):
             grid = json_input.get(i)[j]['input']
@@ -11,7 +13,13 @@ def solution(json_input):
 
 
 def solve(grid):
-    """Solves task c909285e"""
+    """Solves task c909285e
+
+    This task extracts all available shapes where shapes are formed by positions
+    connecting on their sides with the same colour.
+    Once all shapes are extracted, the unique colour shape is found, and the
+    positions the shape encloses are extracted from the grid.
+    """
 
     results = solutils.shapes(grid, btype='side', colour=True)
     # Find the square in all shapes, should be a different colour

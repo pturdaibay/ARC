@@ -1,11 +1,13 @@
 import json
 
 def load_task(json_file):
+    """Opens a task json file and returns its contents"""
+
     try:
         with open(json_file, 'r') as jinput:
             raw_input = json.load(jinput)
     except FileNotFoundError as e:
-        print(f'\nError, file not found: {json_file}', end='\n\n')
+        print(f'\n\nError, file not found: {json_file}', end='\n\n')
         return
     return raw_input
 
@@ -50,8 +52,10 @@ def border_points(position, gsize, btype='all'):
     if x < 0 or x > max_x or y < 0 or y > max_y:
         print (f'Error, invalid parameters')
         return []
+    # Defines adyacent and diagonal borders for the given position
     adya_borders = [(x, y-1), (x-1, y), (x+1, y), (x, y+1)]
     diag_borders = [(x-1, y-1), (x+1, y-1), (x-1, y+1), (x+1, y+1)]
+    # Gets all the borders within the grid
     borders = []
     if btype == 'side' or btype == 'all':
         for x,y in adya_borders:
@@ -212,9 +216,3 @@ def find_unique_c909285e(shapes, grid):
     # Return shape indexes for colours with a single shape using them
     # in theory should be only one for this task
     return [colour_dict[i][0] for i in colour_dict.keys() if len(colour_dict[i]) == 1]
-
-
-if __name__ == '__main__':
-    side_borders((0, 2), (4,4))
-    side_borders((3, 4), (3,3))
-    side_borders((2, 2), (3,4))
