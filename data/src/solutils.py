@@ -5,22 +5,25 @@ def load_task(json_file):
         with open(json_file, 'r') as jinput:
             raw_input = json.load(jinput)
     except FileNotFoundError as e:
-        print(f'Error, file not found: {json_file}')
+        print(f'\nError, file not found: {json_file}', end='\n\n')
         return
     return raw_input
 
 
 def paint_positions(positions, colour, grid):
     """Paints positions on the grid with the given colour
+
     positions: list of points
     colour: colour to use
     grid: grid to paint
     """
+
     for x, y in positions:
         grid[y][x] = colour
 
 def print_grid(grid):
     """Print out the grid"""
+
     for y in range(0, len(grid)):
         for x in range(0, len(grid[y])):
             print(f'{grid[y][x]} ', end='')
@@ -29,17 +32,13 @@ def print_grid(grid):
 
 def border_points(position, gsize, btype='all'):
     """Returns a list of points that border the input position.
+
     position: (x,y) tuple for position coordinates
     gsize: tuple defining the grid size
     btype: border type
             'side' considers only adyacent as border
             'diag' considers only diagonal as border
             'all'  considers both side and diagonal
-
-    >>> side_borders((0, 2), (4,4))
-    [(0, 1), (0, 3), (1, 2)]
-    >>> side_borders((2, 2), (3,4))
-    [(2, 1), (1, 2), (2, 3)]
     """
 
     x, y = position
@@ -66,8 +65,9 @@ def border_points(position, gsize, btype='all'):
     return borders
 
 
-def get_all_populated(grid):
+def get_all_coloured(grid):
     """Return a list of points that are coloured from the given grid"""
+
     coloured = []
     for y in range(0, len(grid)):
         for x in range(0, len(grid[y])):
@@ -77,8 +77,9 @@ def get_all_populated(grid):
 
 
 def shapes(grid, btype='side', colour=False):
-    """Recognises shapes on the given grid, returns a list of shapes. Shape is
-    recognised based on the defined border and colour
+    """Recognises shapes on the given grid, returns a list of shapes.
+
+    A shape is recognised based on the defined border and colour
     grid: list of lists defining the grid values
     btype: can be 'side' or 'diag'. 'side' will find shapes using only lateral
         borders, whereas 'diag' will also use diagonal positions as part of a
@@ -88,6 +89,7 @@ def shapes(grid, btype='side', colour=False):
 
     def colour_match(pos1, pos2):
         """Returns a boolean if the colour in both grid positions is the same"""
+
         x1, y1 = pos1
         x2, y2 = pos2
         return grid[y1][x1] == grid[y2][x2]
@@ -123,16 +125,22 @@ def shapes(grid, btype='side', colour=False):
             matches = [] # shape matches for a position
             for position in borders:
                 matches += find_shape((x, y), position, shapes)
-            matches = list(set(matches))
+            matches = sorted(list(set(matches)))
             if len(matches) == 0: # not connected, new shape ?
                 shapes.append([(x, y)])
             elif len(matches) == 1: # found a shape to join
                 shapes[matches[0]].append((x, y))
             else: # found more than one shape, connect shapes and delete dups
+                # print(f'(x,y): ({x}, {y})')
+                # print(f'matches: {matches}')
+                # for z in range(0, len(shapes)):
+                    # print(f'BEFORE -> shapes[{z}]: {shapes[z]}', sep=' ')
                 for i in matches[1:]:
                     shapes[matches[0]] += shapes[i]
                     del shapes[i]
                 shapes[matches[0]].append((x, y))
+                # for z in range(0, len(shapes)):
+                #     print(f'AFTER -> shapes[{z}]: {shapes[z]}', sep=' ')
     return shapes
 
 
@@ -141,9 +149,11 @@ def get_colour(position, grid):
     x, y = position
     return grid[y][x]
 
-def find_centre(shape):
-    """Finds and returns the centre of a shape
-    shape: list with shape points"""
+
+def find_min_max(shape):
+    """Finds min/max coordinates for a given shape and returns a tuple
+    of the form (minx, maxx, miny, maxy)
+    shape: list with points"""
     minx = miny = 1000
     maxx = maxy = -1000
     for x, y in shape:
@@ -155,6 +165,12 @@ def find_centre(shape):
             miny = y
         if y > maxy:
             maxy = y
+    return (minx, maxx, miny, maxy)
+
+def find_centre(shape):
+    """Finds and returns the centre of a shape
+    shape: list with shape points"""
+    minx, maxx, miny, maxy = find_min_max(shape)
     return ((minx + maxx) // 2, (miny + maxy) // 2)
 
 
@@ -179,6 +195,23 @@ def part_colours_11852cab(part, grid):
             return colour
     return None #if we get here we didn't find any colour
 
+
+def find_unique_c909285e(shapes, grid):
+    """Finds a unique shape in all given shapes, the uniqueness is based on
+    colour. Returns the index of the unique shape"""
+    #Initialise a dictionary to use to hold colours vs shape indexes
+    colour_dict = dict()
+    # Go through shapes, find their colour, and add them up on the dictionary
+    for i in range(0, len(shapes)):
+        if len(shapes[i]) > 1:
+            colour = get_colour(shapes[i][0], grid)
+            if colour_dict.get(colour, None):
+                colour_dict[colour].append(i)
+            else:
+                colour_dict[colour] = [i]
+    # Return shape indexes for colours with a single shape using them
+    # in theory should be only one for this task
+    return [colour_dict[i][0] for i in colour_dict.keys() if len(colour_dict[i]) == 1]
 
 
 if __name__ == '__main__':
