@@ -14,7 +14,7 @@ def solve(grid):
     """Solves task 11852cab"""
 
     # Get main shape
-    results = solutils.get_all_populated(grid)
+    results = solutils.get_all_coloured(grid)
     # Get centre point and parts
     centre = solutils.find_centre(results)
     corners, sides, middle = solutils.parts_11852cab(centre)
