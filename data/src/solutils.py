@@ -66,6 +66,16 @@ def border_points(position, gsize, btype='all'):
     return borders
 
 
+def get_all_populated(grid):
+    """Return a list of points that are coloured from the given grid"""
+    coloured = []
+    for y in range(0, len(grid)):
+        for x in range(0, len(grid[y])):
+            if grid[y][x] != 0:
+                coloured.append((x, y))
+    return coloured
+
+
 def shapes(grid, btype='side', colour=False):
     """Recognises shapes on the given grid, returns a list of shapes. Shape is
     recognised based on the defined border and colour

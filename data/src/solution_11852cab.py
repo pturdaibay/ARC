@@ -14,15 +14,15 @@ def solve(grid):
     """Solves task 11852cab"""
 
     # Get main shape
-    results = solutils.shapes(grid, btype='diag', colour=False)
+    results = solutils.get_all_populated(grid)
     # Get centre point and parts
-    centre = solutils.find_centre(results[0])
+    centre = solutils.find_centre(results)
     corners, sides, middle = solutils.parts_11852cab(centre)
     # Get part colours
     corner_colour = solutils.part_colours_11852cab(corners, grid)
     side_colour = solutils.part_colours_11852cab(sides, grid)
     middle_colour = solutils.part_colours_11852cab(middle, grid)
-    centre_colour = solutils.part_colours_11852cab(centre, grid)
+    centre_colour = solutils.part_colours_11852cab([centre], grid)
     if not corner_colour and centre_colour: # if no corners, use centre_colour
         corner_colour = centre_colour
     solutils.paint_positions(corners, corner_colour, grid)
