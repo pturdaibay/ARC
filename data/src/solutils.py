@@ -38,7 +38,7 @@ def border_points(position, gsize, btype='all'):
     position: (x,y) tuple for position coordinates
     gsize: tuple defining the grid size
     btype: border type
-            'side' considers only adyacent as border
+            'side' considers only adjacent as border
             'diag' considers only diagonal as border
             'all'  considers both side and diagonal
     """
@@ -52,13 +52,13 @@ def border_points(position, gsize, btype='all'):
     if x < 0 or x > max_x or y < 0 or y > max_y:
         print (f'Error, invalid parameters')
         return []
-    # Defines adyacent and diagonal borders for the given position
-    adya_borders = [(x, y-1), (x-1, y), (x+1, y), (x, y+1)]
+    # Defines adjacent and diagonal borders for the given position
+    adja_borders = [(x, y-1), (x-1, y), (x+1, y), (x, y+1)]
     diag_borders = [(x-1, y-1), (x+1, y-1), (x-1, y+1), (x+1, y+1)]
     # Gets all the borders within the grid
     borders = []
     if btype == 'side' or btype == 'all':
-        for x,y in adya_borders:
+        for x,y in adja_borders:
             if x >=0 and x <= max_x and y >= 0 and y <= max_y:
                 borders.append((x,y))
     if btype == 'diag' or btype == 'all':
