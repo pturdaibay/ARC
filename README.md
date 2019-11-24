@@ -31,7 +31,7 @@ When looking at a task, a test-taker has access to inputs & outputs of the demon
 
 ## Task 67385a82.json
 
-![67385a82.json](https://github.com/pturdaibay/ARC/blob/master/data/src/grid-printouts/67385a82.pdf "Task 67385a82.json")
+![67385a82.json](https://github.com/pturdaibay/ARC/blob/master/data/src/grid-printouts/67385a82.json.png "Task 67385a82.json")
 
 This task will colour blue all shapes that are larger than one position on the grid, where the shapes are formed by multiple adjacent positions touching on their sides with the same colour.
 
