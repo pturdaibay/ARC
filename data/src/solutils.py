@@ -23,7 +23,7 @@ def print_grid(grid):
     """Print out the grid"""
     for y in range(0, len(grid)):
         for x in range(0, len(grid[y])):
-            print(grid[y][x], sep=' ', end='')
+            print(f'{grid[y][x]} ', end='')
         print('', end='\n')
 
 
