@@ -33,6 +33,10 @@ def solve(grid):
     centre_colour = solutils.part_colours_11852cab([centre], grid)
     if not corner_colour and centre_colour: # if no corners, use centre_colour
         corner_colour = centre_colour
+    if not middle_colour and centre_colour:
+        middle_colour = centre_colour
+    if not side_colour and centre_colour:
+        side_colour = centre_colour
     # Ensure all positions on the shape are coloured
     solutils.paint_positions(corners, corner_colour, grid)
     solutils.paint_positions(middle, middle_colour, grid)
